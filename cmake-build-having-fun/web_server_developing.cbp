@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="web_server_developing"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="web_server_developing">
+				<Option output="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/web_server_developing" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 web_server_developing"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="web_server_developing/fast">
+				<Option output="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/web_server_developing" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/tmp/tmp.qVuDArAKaB/cmake-build-having-fun"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/../../../../include/c++/4.8.5/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/4.8.5/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 web_server_developing/fast"/>
+					<CompileFile command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -f &quot;/tmp/tmp.qVuDArAKaB/cmake-build-having-fun/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/Condition.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/Epoll.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/HttpData.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/HttpParse.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/HttpRequest.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/HttpResponse.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/MutexLock.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/Server.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/Socket.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/ThreadPool.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/Timer.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/Util.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/include/noncopyable.h">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/Epoll.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/Socket.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/ThreadPool.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/Timer.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/Util.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/http/HttpData.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/http/HttpParse.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/http/HttpRequest.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/http/HttpResponse.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/http/Server.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/src/main.cpp">
+			<Option target="web_server_developing"/>
+		</Unit>
+		<Unit filename="/tmp/tmp.qVuDArAKaB/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
