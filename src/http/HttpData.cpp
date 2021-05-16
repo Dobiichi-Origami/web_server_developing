@@ -5,7 +5,7 @@
 #include "../../include/HttpData.h"
 
 
-void HttpData::closeTimer() {
+void HttpData::closeTimer() {   // 测试push
     if (timer_.lock()) {
         std::shared_ptr<TimerNode> tempTimer(timer_.lock());
         tempTimer -> deleted();
