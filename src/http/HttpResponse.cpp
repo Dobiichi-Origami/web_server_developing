@@ -6,7 +6,7 @@
 
 #include <string>
 
-std::unordered_map<std::string, MimeType> Mime_map = {
+std::unordered_map<std::string, MimeType> Mime_map = {  // 赋值Mime_map，其中MimeType对象为隐式调用了其构造函数生成
         {".html", "text/html"},
         {".xml", "text/xml"},
         {".xhtml", "application/xhtml+xml"},
@@ -29,6 +29,8 @@ std::unordered_map<std::string, MimeType> Mime_map = {
         {"default","text/plain"}
 };
 
+
+// 往buffer中添加该response的信息
 void HttpResponse::appendBuffer(char *buffer) const{
 
     // 版本

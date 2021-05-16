@@ -13,7 +13,7 @@
 
 using std::string;
 
-string &ltrim(string &str) {    //去除左边的制表符
+string &ltrim(string &str) {    //去除左边的空格和制表符
     if (str.empty()) {
         return str;
     }
@@ -22,7 +22,7 @@ string &ltrim(string &str) {    //去除左边的制表符
     return str;
 }
 
-string &rtrim(string &str) {    //去除右边的制表符
+string &rtrim(string &str) {    //去除右边的空格和制表符
     if (str.empty()) {
         return str;
     }
@@ -31,7 +31,7 @@ string &rtrim(string &str) {    //去除右边的制表符
     return str;
 }
 
-string &trim(string &str) {     //去除两边的制表符
+string &trim(string &str) {     //去除两边的空格和制表符
     if (str.empty()) {
         return str;
     }

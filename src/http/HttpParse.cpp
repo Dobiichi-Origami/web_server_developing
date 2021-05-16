@@ -111,13 +111,13 @@ HttpRequestParser::HTTP_CODE HttpRequestParser::parse_requestline(char *line, PA
     return NO_REQUEST;
 }
 
-// 解析请求体中的请求头内容，
-// line为请求头起始字符的指针，
+// 解析请求体中的请求头单行内容，
+// line为请求头单行起始字符的指针，
 // parse_state指代当前解析进度，
 // request为需要设置的请求实体。
 HttpRequestParser::HTTP_CODE HttpRequestParser::parse_headers(char *line, PARSE_STATE &parse_state, HttpRequest &request) {
 
-    if (*line == '\0') {    // 如果请求头为空
+    if (*line == '\0') {    // 如果该行请求头为空
         if (request.mMethod == HttpRequest::GET) {  // 如果是GET方法，此处解析终止，解析器返回GET_REQUEST表示已收到请求
             return GET_REQUEST;
         }
@@ -129,76 +129,77 @@ HttpRequestParser::HTTP_CODE HttpRequestParser::parse_headers(char *line, PARSE_
     char key[100], value[300];
 
     // FIXME 需要修改有些value里也包含了':'符号
-    sscanf(line, "%[^:]:%[^:]", key, value);
+    sscanf(line, "%[^:]:%[^:]", key, value);    // 从一行中读出key值和value值
 
 
-    decltype(HttpRequest::header_map)::iterator it;
-    std::string key_s(key);
-    std::transform(key_s.begin(), key_s.end(), key_s.begin(), ::toupper);
-    std::string value_s(value);
-//    if (key_s == std::string("UPGRADE-INSECURE-REQUESTS")) {
-//        return NO_REQUEST;
-//    }
+    decltype(HttpRequest::header_map)::iterator it;     // 取header_map的迭代器类型赋给 it
+    std::string key_s(key);     // 构造string版本的key
+    std::transform(key_s.begin(), key_s.end(), key_s.begin(), ::toupper);   // transform函数为从参数一迭代器到参数二迭代器的左开右闭区间应用参数四指定的操作，并将结果保存在以参数三开始的区间中
+                                                                            // transform函数还有二元操作的形式，需要在参数二和三之间插入一个参数，代表第二个参数的取值范围的开头
+    std::string value_s(value);     // 构造string版本的value
 
-    if ((it = HttpRequest::header_map.find(trim(key_s))) != (HttpRequest::header_map.end())) {
-        request.mHeaders.insert(std::make_pair(it->second, trim(value_s)));
-    } else {
+    if ((it = HttpRequest::header_map.find(trim(key_s))) != (HttpRequest::header_map.end())) {      // 对字符串截断两边的多余字符之后查找这个字段是否存在于header_map中
+        request.mHeaders.insert(std::make_pair(it->second, trim(value_s)));     // 如果查的到，则将该头部选项对应的HTTP_HEADER和字段值组成pair插入到request对象的mHeaders中
+    } else {    // 不然啥都不做
         //std::cout << "Header no support: " << key << " : " << value << std::endl;
     }
 
-    return NO_REQUEST;
+    return NO_REQUEST;  // 没有多余header了
 }
 
 // 解析body
 HttpRequestParser::HTTP_CODE HttpRequestParser::parse_body(char *body, HttpRequest &request) {
-    request.mContent = body;
+    request.mContent = body;    // 其实压根没解析只是把body赋值给mContent罢了
     return GET_REQUEST;
 }
 
 // http 请求入口
+// 解析请求内容
 HttpRequestParser::HTTP_CODE HttpRequestParser::parse_content(char *buffer, int &check_index, int &read_index,
                                  HttpRequestParser::PARSE_STATE &parse_state, int &start_line,
                                  HttpRequest &request) {
 
     LINE_STATE line_state = LINE_OK;
     HTTP_CODE retcode = NO_REQUEST;
-    while ((line_state = parse_line(buffer, check_index, read_index)) == LINE_OK) {
-        char *temp = buffer + start_line;      // 这一行在buffer中的起始位置
-        start_line = check_index;              // 下一行起始位置
 
-        switch (parse_state) {
-            case PARSE_REQUESTLINE: {
-                retcode = parse_requestline(temp, parse_state, request);
-                if (retcode == BAD_REQUEST)
+    // 开始对整个http request进行解析，buffer是整个request字符串的缓存地址，while循环会将该request一行一行读出来进行解析
+    while ((line_state = parse_line(buffer, check_index, read_index)) == LINE_OK) {     // 如果读的出来一行的话
+        char *temp = buffer + start_line;      // 该行起始字符的地址，start_line是该行起始字符的索引
+        start_line = check_index;              // 索引跳转到下一行
+
+        switch (parse_state) {      // 根据parse_state决定如何解析这一行
+            case PARSE_REQUESTLINE: {       // 如果是在解析请求行，调用parse_requestline函数对该行进行解析
+                retcode = parse_requestline(temp, parse_state, request);    // 保存返回的状态码
+                if (retcode == BAD_REQUEST)     // 如果该请求出错，则终止解析并且返回BAD_REQUEST状态
                     return BAD_REQUEST;
 
-                break;
+                break;  // 解析成功则跳出循环
             }
 
-            case PARSE_HEADER: {
-                retcode = parse_headers(temp, parse_state, request);
+            case PARSE_HEADER: {    // 如果是在解析请求头的某一行，调用parse_headers函数对该行进行解析
+                retcode = parse_headers(temp, parse_state, request);    // 保存返回的状态码
                 if (retcode == BAD_REQUEST) {
-                    return BAD_REQUEST;
-                } else if (retcode == GET_REQUEST) {
+                    return BAD_REQUEST;     // 因为这个函数并不会返回BAD_REQUEST状态，所以这里也不会返回BAD_REQUEST
+                } else if (retcode == GET_REQUEST) {    // 如果是GET方法则返回GET_REQUEST，已经生成了request
                     return GET_REQUEST;
                 }
-                break;
+                break;  // 解析成功则跳出循环
             }
 
-            case PARSE_BODY: {
+            case PARSE_BODY: {      // 如果是在解析body内容，则调用parse_body函数
                 retcode = parse_body(temp, request);
                 if (retcode == GET_REQUEST) {
-                    return GET_REQUEST;
+                    return GET_REQUEST;     // 解析完成，返回GET_REQUEST
                 }
-                return BAD_REQUEST;
+                return BAD_REQUEST;     // 因为这个函数并不会返回BAD_REQUEST状态，所以这里也不会返回BAD_REQUEST
             }
-            default:
+            default:    // 如果有其他的真是见鬼了
                 return INTERNAL_ERROR;
         }
     }
-    if (line_state == LINE_MORE) {
-        return NO_REQUEST;
-    } else {
-        return BAD_REQUEST;
+    if (line_state == LINE_MORE) {  // 如果request字符串不完整
+        return NO_REQUEST;  // 初始化request尚未完成
+    } else {    // 如果是LINE_BAD
+        return BAD_REQUEST; // 初始化request失败
     }
 }

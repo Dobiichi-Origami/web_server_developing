@@ -12,7 +12,7 @@
 #include <pthread.h>
 
 
-class Condition : public noncopyable {
+class Condition : public noncopyable {  // 封装了pthread_cond对象，因为继承了noncopyable类且自身没有实现拷贝/赋值构造函数，所以它也无法复制
 public:
     explicit Condition(MutexLock &mutex) : mutex_(mutex) {
         pthread_cond_init(&cond_, NULL);

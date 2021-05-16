@@ -23,15 +23,18 @@ std::ostream &operator<<(std::ostream &, const HttpRequest &);  //重载输出�
 
 class HttpRequestParser {
 public:
-    enum LINE_STATE {   //行状态枚举集合
+    enum LINE_STATE {   // 行状态枚举集合
         LINE_OK = 0, LINE_BAD, LINE_MORE
     };
 
-    enum PARSE_STATE {  //解析状态枚举集合
+    enum PARSE_STATE {  // 解析状态枚举集合
         PARSE_REQUESTLINE = 0, PARSE_HEADER, PARSE_BODY
     };
 
-    enum HTTP_CODE {    //HTTP状态码枚举集合
+    enum HTTP_CODE {    // HTTP解析状态枚举集合
+        // NO_REQUEST: 还未初始化好request，
+        // GET_REQUEST: 已经初始化好request，
+        // BAD_REQUEST: 初始化request出错
         NO_REQUEST, GET_REQUEST, BAD_REQUEST, FORBIDDEN_REQUEST, INTERNAL_ERROR, CLOSED_CONNECTION
     };
 
