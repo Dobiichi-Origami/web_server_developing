@@ -36,7 +36,7 @@ public:
 
     static void current_time();
 
-    static size_t current_msec;
+    static size_t current_msec; // 当前运行的时间数，以毫秒为单位
 
 private:
     bool deleted_;

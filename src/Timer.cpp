@@ -10,9 +10,9 @@
 
 
 
-size_t TimerNode::current_msec = 0; // 当前时间
+size_t TimerNode::current_msec = 0; // 初始化
 
-const size_t TimerManager::DEFAULT_TIME_OUT = 20 * 1000; // 20s
+const size_t TimerManager::DEFAULT_TIME_OUT = 20 * 1000; // 默认超时时间20s
 
 
 
@@ -23,7 +23,7 @@ TimerNode::TimerNode(std::shared_ptr<HttpData> httpData, size_t timeout) : delet
 
 TimerNode::~TimerNode() {
     //FIXME 析构关闭资源的时候，要讲httpDataMap中的引用,否则资源无法关闭，后期可改进为httpDataMap存储 weak_ptr<HttpData>
-    //std::cout << "TimerNode析构" << std::endl;
+
     // 析构时如果是被deleted 则httpData为NULL, 不用处理，而如果是超时，则需要删除Epoll中的httpDataMap中
     if (httpData) {
         auto it = Epoll::httpDataMap.find(httpData->clientSocket_->fd);
@@ -36,12 +36,12 @@ TimerNode::~TimerNode() {
 void inline TimerNode::current_time() {
     struct timeval cur;
     gettimeofday(&cur, NULL);
-    current_msec = (cur.tv_sec * 1000) + (cur.tv_usec / 1000);
+    current_msec = (cur.tv_sec * 1000) + (cur.tv_usec / 1000);  // 设置当前时间，以毫秒为单位
 }
 
 
 void TimerNode::deleted() {
-    // 删除采用标记删除， 并及时析构HttpData，以关闭描述符
+    // 删除采用标记，并及时析构HttpData，以关闭描述符
     // 关闭定时器时应该把 httpDataMap 里的HttpData 一起erase
     httpData.reset();
     deleted_ = true;
@@ -58,10 +58,11 @@ void TimerManager::addTimer(std::shared_ptr<HttpData> httpData, size_t timeout) 
     }
 }
 
+// 处理计时器队列中的超时计时器
 void TimerManager::handle_expired_event() {
     MutexLockGuard guard(lock_);
+
     // 更新当前时间
-    //std::cout << "开始处理超时事件" << std::endl;
     TimerNode::current_time();
     while(!TimerQueue.empty()) {
         Shared_TimerNode timerNode = TimerQueue.top();
@@ -71,7 +72,7 @@ void TimerManager::handle_expired_event() {
         } else if (timerNode->isExpired()) {
             // 过期 删除
             TimerQueue.pop();
-        } else {
+        } else {    // 如果这个计时器没有到时而且不是deleted的状态，则队列后面的也不会是这一种状态
             break;
         }
     }

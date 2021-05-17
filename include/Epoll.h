@@ -21,7 +21,7 @@
 class Epoll {
 
 public:
-    static int init(int max_events);
+    static int init(int max_events);    // 初始化Epoll事件处理器
 
     static int addFd(int epoll_fd, int fd, __uint32_t events, std::shared_ptr<HttpData>);
 
