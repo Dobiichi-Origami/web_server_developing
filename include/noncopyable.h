@@ -10,8 +10,8 @@
 class noncopyable
 {
 public:
-    noncopyable(const noncopyable&) = delete;
-    noncopyable& operator=(const noncopyable&) = delete;
+    noncopyable(const noncopyable&) = delete;   // 禁用拷贝构造函数
+    noncopyable& operator=(const noncopyable&) = delete;    // 禁用赋值函数
 
 protected:
     noncopyable() = default;

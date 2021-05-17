@@ -4,7 +4,7 @@
 
 #include "../../include/HttpRequest.h"
 
-std::ostream &operator<<(std::ostream &os, const HttpRequest &request) {
+std::ostream &operator<<(std::ostream &os, const HttpRequest &request) {    // 重载输出操作符的实现
     os << "method:" << request.mMethod << std::endl;
     os << "uri:" << request.mUri << std::endl;
     os << "version:" << request.mVersion << std::endl;

@@ -17,28 +17,28 @@
 #include <memory>
 
 
-const int MAX_THREAD_SIZE = 1024;
-const int MAX_QUEUE_SIZE = 10000;
+const int MAX_THREAD_SIZE = 1024;   // 线程数上限
+const int MAX_QUEUE_SIZE = 10000;   // 最大队上限
 
-typedef enum {
+typedef enum {  // 枚举类型
     immediate_mode = 1,
     graceful_mode = 2
 } ShutdownMode;
 
-struct ThreadTask {
-    std::function<void(std::shared_ptr<void>)> process;
-    std::shared_ptr<void> arg;
+struct ThreadTask { // 线程任务结构体
+    std::function<void(std::shared_ptr<void>)> process; // 封装一个函数对象，作为所需执行任务的指代
+    std::shared_ptr<void> arg;  // 这里是任务的参数
 };
 
 
-class ThreadPool {
+class ThreadPool {  // 线程池对象
 
 public:
     ThreadPool(int thread_s, int max_queue_s);
 
     ~ThreadPool();
 
-    bool append(std::shared_ptr<void> arg, std::function<void(std::shared_ptr<void>)> fun);
+    bool append(std::shared_ptr<void> arg, std::function<void(std::shared_ptr<void>)> fun); // 往线程池里头添加任务，分配线程
 
     void shutdown(bool graceful);
 
@@ -48,12 +48,12 @@ private:
     void run();
 
 private:
-    MutexLock mutex_;
-    Condition condition_;
+    MutexLock mutex_;   // 我们自己封装的互斥锁对象
+    Condition condition_;   // 我们自己封装的互斥条件对象
 
-    int thread_size;
-    int max_queue_size;
-    int started;
+    int thread_size;    // 线程数
+    int max_queue_size; // 最大等待队列数
+    int started;    //
     int shutdown_;
     std::vector<pthread_t> threads;
     std::list<ThreadTask> request_queue;

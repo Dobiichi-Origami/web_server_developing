@@ -10,22 +10,22 @@
 #include <pthread.h>
 #include "noncopyable.h"
 
-class MutexLock: public noncopyable {
+class MutexLock: public noncopyable {   // 封装pthread_mutex类，继承noncopyable
 
 public:
-    MutexLock() {
+    MutexLock() {   // 构造互斥锁
         pthread_mutex_init(&mutex_, NULL);
     }
-    ~MutexLock() {
+    ~MutexLock() {  // 析构互斥锁
         pthread_mutex_destroy(&mutex_);
     }
-    void lock() {
+    void lock() {   // 上锁
         pthread_mutex_lock(&mutex_);
     }
-    void unlock() {
+    void unlock() { // 解锁
         pthread_mutex_unlock(&mutex_);
     }
-    pthread_mutex_t *getMutex() {
+    pthread_mutex_t *getMutex() {   // 获得锁本身
         return &mutex_;
     }
 
@@ -34,7 +34,7 @@ private:
 };
 
 
-class MutexLockGuard: public noncopyable {
+class MutexLockGuard: public noncopyable {  // 对锁的操作再封装，实现了自动上锁和自动释放锁的功能
 public:
     explicit MutexLockGuard(MutexLock &mutex): mutex_(mutex) {
         mutex_.lock();
