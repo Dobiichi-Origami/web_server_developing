@@ -11,7 +11,7 @@
 
 
 std::unordered_map<int, std::shared_ptr<HttpData>> Epoll::httpDataMap;
-const int Epoll::MAX_EVENTS = 10000;
+const int Epoll::MAX_EVENTS = 10000;    // 目前没有用到的 MAX_EVENTS，实际的事件数组 events 大小默认是1024
 epoll_event *Epoll::events;
 
 const uint32_t Epoll::DEFAULT_EVENTS = (EPOLLIN | EPOLLET | EPOLLONESHOT);
@@ -19,7 +19,7 @@ const uint32_t Epoll::DEFAULT_EVENTS = (EPOLLIN | EPOLLET | EPOLLONESHOT);
 TimerManager Epoll::timerManager;
 
 
-// 初始化epoll的各项属性
+// 初始化epoll和对应的epoll_events缓存
 int Epoll::init(int max_events) {
     int epoll_fd = ::epoll_create(max_events);
     if (epoll_fd == -1) {
@@ -65,16 +65,15 @@ int Epoll::modFd(int epoll_fd, int fd, __uint32_t events, std::shared_ptr<HttpDa
 }
 
 // 一样，但不完全一样
-int Epoll::delFd(int epoll_fd, int fd, __uint32_t events) {
-    epoll_event event;
-    event.events = events;
-    event.data.fd = fd;
-    int ret = epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, &event);   // 删除文件描述符指定的事件监听
+int Epoll::delFd(int epoll_fd, int fd) {
+
+    int ret = epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, NULL);   // 删除文件描述符指定的事件监听
     if (ret < 0) {
         std::cout << "epoll del error" << std::endl;
         return -1;
     }
-    auto it = httpDataMap.find(fd); // epoll里删完了还不算，要在httpDataMap里面一块删除了才可以
+    // epoll里删完了还不算，要在httpDataMap里面一块删除了才可以
+    auto it = httpDataMap.find(fd);
     if (it != httpDataMap.end()) {
         httpDataMap.erase(it);
     }

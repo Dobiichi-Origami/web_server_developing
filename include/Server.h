@@ -17,16 +17,18 @@
 
 class HttpServer {
 public:
-    enum FileState {
+    enum FileState {    // 文件状态枚举集合
         FILE_OK,
         FILE_NOT_FOUND,
         FILE_FORBIDDEN
     };
 
 public:
+
+    // Http服务器构造函数，默认端口80，监听所有端口
     explicit HttpServer(int port = 80, const char *ip = nullptr) : serverSocket(port, ip) {
-        serverSocket.bind();
-        serverSocket.listen();
+        serverSocket.bind();    // 绑定具体的地址
+        serverSocket.listen();  // 开始监听
     }
 
     void run(int, int max_queue_size = 10000);

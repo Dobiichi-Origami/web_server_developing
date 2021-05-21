@@ -23,7 +23,7 @@
 #include <cstring>
 
 
-
+// 404页面
 char NOT_FOUND_PAGE[] = "<html>\n"
                         "<head><title>404 Not Found</title></head>\n"
                         "<body bgcolor=\"white\">\n"
@@ -32,6 +32,7 @@ char NOT_FOUND_PAGE[] = "<html>\n"
                         "</body>\n"
                         "</html>";
 
+// 403页面
 char FORBIDDEN_PAGE[] = "<html>\n"
                         "<head><title>403 Forbidden</title></head>\n"
                         "<body bgcolor=\"white\">\n"
@@ -40,6 +41,7 @@ char FORBIDDEN_PAGE[] = "<html>\n"
                         "</body>\n"
                         "</html>";
 
+// 默认主页
 char INDEX_PAGE[] = "<!DOCTYPE html>\n"
                     "<html>\n"
                     "<head>\n"
@@ -64,50 +66,29 @@ char INDEX_PAGE[] = "<!DOCTYPE html>\n"
                     "</body>\n"
                     "</html>";
 
+// 测试页面
 char TEST[] = "HELLO WORLD";
 
+// 网页根目录地址
 extern std::string basePath;
 
 
+// 服务器运行
+// 设置线程池中执行任务的线程数
+// 与任务队列的最大大小
 void HttpServer::run(int thread_num, int max_queque_size) {
     ThreadPool threadPool(thread_num, max_queque_size);
 
-    //        ClientSocket *clientSocket = new ClientSocket;
-//        serverSocket.accept(*clientSocket);
-//        thread::ThreadTask *threadTask = new ThreadTask;
-//        threadTask->process = std::bind(&HttpServer::do_request, this, std::placeholders::_1);
-//        threadTask->arg = static_cast<void*>(clientSocket);
-//        threadPool.append(threadTask);
     int epoll_fd = Epoll::init(1024);
-    //std::cout << "a|epoll_fd=" << epoll_fd << std::endl;
-//        int ret = setnonblocking(epoll_fd);
-//        if (ret < 0) {
-//            std::cout << "epoll_fd set nonblocking error" << std::endl;
-//        }
+
     std::shared_ptr<HttpData> httpData(new HttpData());
     httpData->epoll_fd = epoll_fd;
-    serverSocket.epoll_fd = epoll_fd;   // 之前就是这里忘了添加,导致穿进去的serverSocket具有不正确的epoll_fd
+    serverSocket.epoll_fd = epoll_fd;
 
-    __uint32_t event = (EPOLLIN | EPOLLET);
-    Epoll::addFd(epoll_fd, serverSocket.listen_fd, event, httpData);
+    __uint32_t event = (EPOLLIN | EPOLLET); // 电平触发模式下监听输入事件
+    Epoll::addFd(epoll_fd, serverSocket.listen_fd, event, httpData);    // 添加服务器监听端口的监听事件
 
-    while (true) {
-
-
-//        epoll_event eventss;
-//        epoll_event events[1024];
-//        eventss.data.fd = serverSocket.listen_fd;
-//        eventss.events = EPOLLIN | EPOLLET;
-//
-//        epoll_ctl(epoll_fd, EPOLL_CTL_ADD, serverSocket.listen_fd, &eventss);
-//        int ret = epoll_wait(epoll_fd, events, 1024, -1);
-//        if (ret > 0) {
-//            std::cout << "ret =" << ret << std::endl;
-//        } else {
-//            std::cout << "ret =" << ret << std::endl;
-//        }
-
-        //test end
+    while (true) {  // 从EPOLL中轮询获取工作
 
         std::vector<std::shared_ptr<HttpData>> events = Epoll::poll(serverSocket, 1024, -1);
         // FIXME 将事件传递给 线程池
@@ -125,9 +106,9 @@ void HttpServer::do_request(std::shared_ptr<void> arg) {
 
     char buffer[BUFFERSIZE];
 
-    bzero(buffer, BUFFERSIZE);
+    bzero(buffer, BUFFERSIZE); // 初始化缓冲区
     int check_index = 0, read_index = 0, start_line = 0;
-    ssize_t recv_data;
+    ssize_t recv_data;  // ssize_t 是个 long int
     HttpRequestParser::PARSE_STATE  parse_state = HttpRequestParser::PARSE_REQUESTLINE;
 
     while (true) {
@@ -171,13 +152,14 @@ void HttpServer::do_request(std::shared_ptr<void> arg) {
             }
             header(sharedHttpData);
             getMime(sharedHttpData);
-            // FIXME 之前测试时写死的了文件路径导致上服务器出错
-            //static_file(sharedHttpData, "/Users/lichunlin/CLionProjects/webserver/version_0.1");
-            FileState  fileState = static_file(sharedHttpData, basePath.c_str());
+
+            FileState fileState = static_file(sharedHttpData, basePath.c_str());
             send(sharedHttpData, fileState);
             // 如果是keep_alive else sharedHttpData将会自动析构释放clientSocket，从而关闭资源
             if (sharedHttpData->response_->isKeepAlive()) {
                 //FIXME std::cout << "再次添加定时器  keep_alive: " << sharedHttpData->clientSocket_->fd << std::endl;
+
+                // 设置oneshot并且触发后，必须重新设定该socket对应fd的监听事件
                 Epoll::modFd(sharedHttpData->epoll_fd, sharedHttpData->clientSocket_->fd, Epoll::DEFAULT_EVENTS, sharedHttpData);
                 Epoll::timerManager.addTimer(sharedHttpData, TimerManager::DEFAULT_TIME_OUT);
             }
@@ -240,7 +222,7 @@ HttpServer::FileState HttpServer::static_file(std::shared_ptr<HttpData> httpData
             httpData->response_->setMStatusCode(HttpResponse::k404NotFound);
             httpData->response_->setMStatusMsg("Not Found");
         }
-        // 废弃， 404就不需要设置filepath
+        // 废弃，404就不需要设置filepath
         //httpData->response_->setFilePath(std::string(basepath)+"/404.html");
         //std::cout << "File Not Found: " <<   file << std::endl;
         return FILE_NOT_FOUND;

@@ -144,7 +144,7 @@ HttpRequestParser::HTTP_CODE HttpRequestParser::parse_headers(char *line, PARSE_
         //std::cout << "Header no support: " << key << " : " << value << std::endl;
     }
 
-    return NO_REQUEST;  // 没有多余header了
+    return NO_REQUEST;  // 该header处理完毕
 }
 
 // 解析body
@@ -173,7 +173,7 @@ HttpRequestParser::HTTP_CODE HttpRequestParser::parse_content(char *buffer, int 
                 if (retcode == BAD_REQUEST)     // 如果该请求出错，则终止解析并且返回BAD_REQUEST状态
                     return BAD_REQUEST;
 
-                break;  // 解析成功则跳出循环
+                break;  // 跳出switch
             }
 
             case PARSE_HEADER: {    // 如果是在解析请求头的某一行，调用parse_headers函数对该行进行解析
@@ -183,7 +183,7 @@ HttpRequestParser::HTTP_CODE HttpRequestParser::parse_content(char *buffer, int 
                 } else if (retcode == GET_REQUEST) {    // 如果是GET方法则返回GET_REQUEST，已经生成了request
                     return GET_REQUEST;
                 }
-                break;  // 解析成功则跳出循环
+                break;  // 跳出switch
             }
 
             case PARSE_BODY: {      // 如果是在解析body内容，则调用parse_body函数

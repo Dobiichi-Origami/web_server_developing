@@ -19,9 +19,7 @@ void daemon_run()
 {
     int pid;
     signal(SIGCHLD, SIG_IGN);
-    //1）在父进程中，fork返回新创建子进程的进程ID；
-    //2）在子进程中，fork返回0；
-    //3）如果出现错误，fork返回一个负值；
+
     pid = fork();
     if (pid < 0)
     {
@@ -56,7 +54,7 @@ int main(int argc, char **argv) {
 
     int threadNumber = 4;   //  默认线程数
     int port = 7244;        // 默认端口
-    char tempPath[256];
+    char tempPath[300]; // 之前是256，为什么？
     int opt;
     const char *str = "t:p:r:d";
     bool daemon = false;

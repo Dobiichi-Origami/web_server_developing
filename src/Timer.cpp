@@ -24,7 +24,7 @@ TimerNode::TimerNode(std::shared_ptr<HttpData> httpData, size_t timeout) : delet
 TimerNode::~TimerNode() {
     //FIXME 析构关闭资源的时候，要讲httpDataMap中的引用,否则资源无法关闭，后期可改进为httpDataMap存储 weak_ptr<HttpData>
 
-    // 析构时如果是被deleted 则httpData为NULL, 不用处理，而如果是超时，则需要删除Epoll中的httpDataMap中
+    // 析构时如果是被deleted 则httpData为NULL, 不用处理，而如果是超时，则需要删除Epoll中的httpDataMap中的指向对应HttpData的指针，释放资源
     if (httpData) {
         auto it = Epoll::httpDataMap.find(httpData->clientSocket_->fd);
         if (it != Epoll::httpDataMap.end()) {
@@ -70,7 +70,7 @@ void TimerManager::handle_expired_event() {
             // 删除节点
             TimerQueue.pop();
         } else if (timerNode->isExpired()) {
-            // 过期 删除
+            // 过期删除
             TimerQueue.pop();
         } else {    // 如果这个计时器没有到时而且不是deleted的状态，则队列后面的也不会是这一种状态
             break;

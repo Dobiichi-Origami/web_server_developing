@@ -27,7 +27,7 @@ public:
 
     static int modFd(int epoll_fd, int fd, __uint32_t events, std::shared_ptr<HttpData>);
 
-    static int delFd(int epoll_fd, int fd, __uint32_t events);
+    static int delFd(int epoll_fd, int fd);
 
     static std::vector<std::shared_ptr<HttpData>> poll(const ServerSocket &serverSocket, int max_event, int timeout);
 
